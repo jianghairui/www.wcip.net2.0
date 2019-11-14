@@ -42,7 +42,7 @@ function if_int($str) {
 }
 
 function is_tel($tel) {
-    if(!preg_match('/^1[34578]\d{9}$/',$tel)) {
+    if(!preg_match('/^1\d{10}$/',$tel)) {
         return false;
     }
     return true;
@@ -63,8 +63,8 @@ function is_currency($str) {
 }
 
 function is_lonlat($lon='',$lat='') {
-    $lon_rule = '/^-?((0|1?[0-7]?[0-9]?)(([.][0-9]{1,6})?)|180(([.][0]{1,6})?))$/';
-    $lat_rule = '/^-?((0|[1-8]?[0-9]?)(([.][0-9]{1,6})?)|90(([.][0]{1,6})?))$/';
+    $lon_rule = '/^-?((\d|[1-9]\d|1[0-7]\d)(\.\d{1,6})?|180)$/';
+    $lat_rule = '/^-?((\d|[1-8]\d)(\.\d{1,6})?|90)$/';
     if(preg_match($lon_rule,$lon) && preg_match($lat_rule,$lat)) {
         return true;
     }
@@ -228,7 +228,7 @@ function generateVerify($width,$height,$type,$length,$fontsize) {
             break;
     }
     for($i=0;$i<$length;$i++) {
-        imagettftext($image,$fontsize,mt_rand(-30,30),$i*($width/$length)+5,mt_rand(($height/2)+($fontsize/2),($height/2)+($fontsize/2)),randColor($image),'static/src/fonts/PingFang-Regular.ttf',$str[$i]);
+        imagettftext($image,$fontsize,mt_rand(-30,30),$i*($width/$length)+5,mt_rand(($height/2)+($fontsize/2),($height/2)+($fontsize/2)),randColor($image),'static/src/fonts/ELEGGARI.TTF',$str[$i]);
     }
     //添加像素点
     for ($i=1;$i<=100;$i++) {
@@ -245,9 +245,7 @@ function randColor($image) {
     return imagecolorallocate($image,mt_rand(0,255),mt_rand(0,255),mt_rand(0,255));
 }
 
-function mredis($config = []) {
-    return \my\MyRedis::getInstance($config);
-}
+
 /*----------------------------- 后加入的分割线--------------------------*/
 
 function curl_post_data($url, $curlPost,$userCert = false)
@@ -332,15 +330,14 @@ function arr2xml($data, $root = true){
 }
 
 //后台上传图片
-function upload($k) {
+function upload($k,$base_path = 'upload/admin/') {
     if(checkfile($k) !== true) {
         return array('error'=>1,'msg'=>checkfile($k));
     }
-
     $filename_array = explode('.',$_FILES[$k]['name']);
     $ext = array_pop($filename_array);
 
-    $path =  'static/upload/' . date('Y-m-d');
+    $path = $base_path . date('Y-m-d');
     is_dir($path) or mkdir($path,0755,true);
     //转移临时文件
     $newname = create_unique_number() . '.' . $ext;
@@ -366,7 +363,7 @@ function checkfile($file) {
         return '图片格式无效';
     }
     if($_FILES[$file]["size"] > 1024*512) {
-        return '图片大小不超过300Kb';
+        return '图片大小不超过512Kb';
     }
     if ($_FILES[$file]["error"] > 0) {
         return "error: " . $_FILES[$file]["error"];
@@ -400,7 +397,7 @@ function ajaxUpload($k,$maxsize=512) {
     $filename_array = explode('.',$_FILES[$k]['name']);
     $ext = array_pop($filename_array);
 
-    $path =  'static/tmp/';
+    $path =  'tmp/';
     is_dir($path) or mkdir($path,0755,true);
     //转移临时文件
     $newname = create_unique_number() . '.' . $ext;
@@ -411,21 +408,36 @@ function ajaxUpload($k,$maxsize=512) {
 
 function rename_file($tmp,$path = '') {
     $filename = substr(strrchr($tmp,"/"),1);
-    $path = $path ? $path : 'static/upload/';
+    $path = $path ? $path : 'upload/api/';
     $path.= date('Y-m-d') . '/';
     is_dir($path) or mkdir($path,0755,true);
     @rename($tmp, $path . $filename);
     return $path . $filename;
 }
 
-function checkPost($postArray) {
+function checkInput($postArray) {
     if(empty($postArray)) {
-        throw new HttpResponseException(ajax($postArray,-3));
+        throw new HttpResponseException(ajax('数据不能为空',-3));
     }
     foreach ($postArray as $value) {
         if (is_null($value) || $value === '') {
-            throw new HttpResponseException(ajax($postArray,-3));
+            throw new HttpResponseException(ajax('数据不能为空',-3));
         }
     }
     return true;
 }
+
+function checkPost($postArray) {
+    if(empty($postArray)) {
+        throw new HttpResponseException(ajax($postArray,-2));
+    }
+    foreach ($postArray as $value) {
+        if (is_null($value) || $value === '') {
+            throw new HttpResponseException(ajax($postArray,-2));
+        }
+    }
+    return true;
+}
+
+
+

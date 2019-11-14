@@ -38,7 +38,7 @@ class Login extends Base {
             $where['username'] = input('post.username');
             $where['password'] = md5(input('post.password') . config('login_key'));
             try {
-                $result = Db::table('admin')->where($where)->find();
+                $result = Db::table('mp_admin')->where($where)->find();
 
             }catch (\Exception $e) {
                 $this->error($e->getMessage(),url('Login/index'));
@@ -50,8 +50,8 @@ class Login extends Base {
                     exit($this->fetch('frozen'));
                 }
                 try {
-                    Db::table('admin')->where($where)->setInc('login_times');
-                    Db::table('admin')->where($where)->update(['last_login_time'=>time(),'last_login_ip'=>$this->getip()]);
+                    Db::table('mp_admin')->where($where)->setInc('login_times');
+                    Db::table('mp_admin')->where($where)->update(['last_login_time'=>time(),'last_login_ip'=>$this->getip()]);
                 }catch (\Exception $e) {
                     $this->error($e->getMessage(),url('Login/index'));
                 }
@@ -93,9 +93,9 @@ class Login extends Base {
     public function personal() {
         $id = session('admin_id');
         try {
-            $info = Db::table('admin')->where('id','=',$id)->find();
+            $info = Db::table('mp_admin')->where('id','=',$id)->find();
         } catch (\Exception $e) {
-            return ajax($e->getMessage(), -1);
+            die($e->getMessage());
         }
         $this->assign('info',$info);
         return $this->fetch();
@@ -103,19 +103,26 @@ class Login extends Base {
 
     public function modifyInfo() {
         $id = session('admin_id');
-        $val['password'] = input('post.password','');
+        $val['realname'] = input('post.realname');
+        $val['gender'] = input('post.gender');
+        $val['tel'] = input('post.tel');
+        $val['email'] = input('post.email');
+        checkInput($val);
+        $val['password'] = input('post.password');
+        $val['desc'] = input('post.desc');
         if($val['password']) {
             $val['password'] = md5($val['password'] . config('login_key'));
         }else {
-            return ajax();
+            unset($val['password']);
         }
         try {
-            Db::table('admin')->where('id','=',$id)->update($val);
+            Db::table('mp_admin')->where('id','=',$id)->update($val);
         }catch (\Exception $e) {
             return ajax($e->getMessage(),-1);
         }
-        return ajax();
+        return ajax($val,1);
     }
+
 
     protected function log($detail = '', $type = 0) {
         $insert['detail'] = $detail;
@@ -123,7 +130,7 @@ class Login extends Base {
         $insert['create_time'] = time();
         $insert['ip'] = $this->getip();
         $insert['type'] = $type;
-        Db::table('syslog')->insert($insert);
+        Db::table('mp_syslog')->insert($insert);
     }
 
 

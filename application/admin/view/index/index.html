@@ -23,13 +23,8 @@
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
 
-    <!--_footer 作为公共模版分离出去-->
-    <script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/lib/layer/2.4/layer.js"></script>
-    <script type="text/javascript" src="/static/h-ui/js/H-ui.min.js"></script>
-    <script type="text/javascript" src="/static/h-ui.admin/js/H-ui.admin.js"></script>
-    <!--/_footer 作为公共模版分离出去-->
-    <title>山海文化管理系统</title>
+
+    <title>山海官网管理系统</title>
 </head>
 <body>
 {include file="public/header" /}
@@ -57,88 +52,7 @@
                     {$Think.session.last_login_time|date="Y-m-d H:i:s"}
                 {/if}
                 </p>
-                <table class="table table-border table-bordered table-bg mt-20">
-                    <thead>
-                    <tr>
-                        <th colspan="2" scope="col">服务器信息</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th width="30%">服务器计算机名</th>
-                        <td><span id="lbServerName">山海文化</span></td>
-                    </tr>
-                    <tr>
-                        <td>服务器IP地址</td>
-                        <td>{$Think.server.server_addr}</td>
-                    </tr>
-                    <tr>
-                        <td>服务器域名</td>
-                        <td>{$Think.server.http_host}</td>
-                    </tr>
-                    <tr>
-                        <td>服务器端口 </td>
-                        <td>{$Think.server.server_port}</td>
-                    </tr>
-                    <tr>
-                        <td>服务器软件 </td>
-                        <td>{$Think.server.server_software}</td>
-                    </tr>
-                    <tr>
-                        <td>项目所在目录 </td>
-                        <td>{$Think.server.document_root}</td>
-                    </tr>
-                    <tr>
-                        <td>服务器操作系统 </td>
-                        <td>CentOS release 6.5 (Final)</td>
-                    </tr>
-                    <tr>
-                        <td>服务器脚本超时时间 </td>
-                        <td>60秒</td>
-                    </tr>
-                    <tr>
-                        <td>服务器当前时间 </td>
-                        <td id="clock"></td>
-                    </tr>
-                    <tr>
-                        <td>CPU 核数 </td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>CPU 型号 </td>
-                        <td>Intel(R) Xeon(R) Platinum 8163 CPU @ 2.50GHz</td>
-                    </tr>
-                    <tr>
-                        <td>服务器内存 </td>
-                        <td>8192M</td>
-                    </tr>
-                    <tr>
-                        <td>当前系统用户名 </td>
-                        <td>{$Think.server.user}</td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
-            <script>
-                var int = setInterval("clock()",50);
-
-
-                function clock()
-                {
-                    document.getElementById("clock").innerHTML=show()+'<br>'
-                }
-
-                function show(){
-                    var mydate = new Date();
-                    var str = "" + mydate.getFullYear() + "年";
-                    str += (Array(2).join('0') + (mydate.getMonth() + 1)).slice(-2) + "月";
-                    str += (Array(2).join('0') + mydate.getDate()).slice(-2) + "日 ";
-                    str += (Array(2).join('0') + mydate.getHours()).slice(-2) + ":";
-                    str += (Array(2).join('0') + mydate.getMinutes()).slice(-2) + ":";
-                    str += (Array(2).join('0') + mydate.getSeconds()).slice(-2);
-                    return str;
-                }
-            </script>
         </div>
     </div>
 </section>
@@ -149,25 +63,16 @@
         <li id="closeall">关闭全部 </li>
     </ul>
 </div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="/static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="/lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 <script type="text/javascript">
-    $(function(){
-        /*$("#min_title_list li").contextMenu('Huiadminmenu', {
-            bindings: {
-                'closethis': function(t) {
-                    console.log(t);
-                    if(t.find("i")){
-                        t.find("i").trigger("click");
-                    }
-                },
-                'closeall': function(t) {
-                    alert('Trigger was '+t.id+'\nAction was Email');
-                },
-            }
-        });*/
-    });
     /*个人信息*/
     function myselfinfo(){
         layer.open({
