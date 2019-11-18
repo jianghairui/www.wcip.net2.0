@@ -3,6 +3,20 @@
 </style>
 <article class="page-container">
     <form class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">案例类型：</label>
+            <div class="formControls col-xs-4 col-sm-4">
+                <span class="select-box">
+                    <select class="select" name="type" id="type">
+                        <option value="1" {if $info['type'] == '1'}selected{/if}>文创产品</option>
+                        <option value="2" {if $info['type'] == '2'}selected{/if}>智慧政务</option>
+                        <option value="3" {if $info['type'] == '3'}selected{/if}>品牌营销</option>
+                    </select>
+                </span>
+            </div>
+            <div class="col-3">
+            </div>
+        </div>
         <div class="row cl" id="picsize">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span></label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -23,6 +37,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>案例标题：</label>
             <div class="formControls col-xs-8 col-sm-9">

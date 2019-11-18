@@ -13,6 +13,7 @@ class Cases extends Base {
     public function caseList()
     {
         $param['search'] = input('param.search');
+        $param['type'] = input('param.type');
         $page['query'] = http_build_query(input('param.'));
 
         $curr_page = input('param.page',1);
@@ -21,7 +22,9 @@ class Cases extends Base {
         if($param['search']) {
             $where[] = ['title','like',"%{$param['search']}%"];
         }
-
+        if($param['type']) {
+            $where[] = ['type','=',$param['type']];
+        }
         $count = Db::table('mp_case')->where($where)->count();
 
         $page['count'] = $count;
@@ -48,6 +51,7 @@ class Cases extends Base {
     public function caseAddPost() {
         $val['title'] = input('post.title');
         $val['desc'] = input('post.desc');
+        $val['type'] = input('post.type',1);
         checkInput($val);
         $val['create_time'] = date('Y-m-d H:i:s');
         $val['admin_id'] = session('admin_id');
@@ -90,6 +94,7 @@ class Cases extends Base {
     public function caseMod() {
         $val['title'] = input('post.title');
         $val['desc'] = input('post.desc');
+        $val['type'] = input('post.type',1);
         $val['id'] = input('post.id');
         checkInput($val);
         $val['admin_id'] = session('admin_id');

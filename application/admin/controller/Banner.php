@@ -252,4 +252,88 @@ class Banner extends Base {
     }
 
 
+    public function shandong() {
+        $whereHome = [
+            ['id','=',2]
+        ];
+
+        if(request()->isPost()) {
+            $pic['qrcode3'] = input('post.qrcode3');
+            $pic['role0_icon'] = input('post.role0_icon');
+            $pic['role1_icon'] = input('post.role1_icon');
+            $pic['role2_icon'] = input('post.role2_icon');
+            $pic['role3_icon'] = input('post.role3_icon');
+
+            foreach ($pic as $v) {
+                if(!$v) {
+                    return ajax('请上传所有图片',-1);
+                }
+            }
+
+            $val['role0'] = input('post.role0');
+            $val['role1'] = input('post.role1');
+            $val['role2'] = input('post.role2');
+            $val['role3'] = input('post.role3');
+            $val['video_url'] = input('post.video_url');
+            $val['desc'] = input('post.desc');
+            checkInput($val);
+            $val['intro'] = input('post.intro');
+            try {
+                $exist = Db::table('mp_home')->where($whereHome)->find();
+                if(!$exist) {
+                    return ajax('非法操作',-1);
+                }
+                if(!file_exists($pic['qrcode3'])) {
+                    return ajax('请上传小程序二维码',-1);
+                }
+                if(!file_exists($pic['role0_icon'])) {
+                    return ajax('请上传普通用户图标',-1);
+                }
+                if(!file_exists($pic['role1_icon'])) {
+                    return ajax('请上传博文图景图标',-1);
+                }
+                if(!file_exists($pic['role2_icon'])) {
+                    return ajax('请上传设计师图标',-1);
+                }
+                if(!file_exists($pic['role3_icon'])) {
+                    return ajax('请上传工厂图标',-1);
+                }
+
+                foreach ($pic as $k=>$v) {
+                    if ($v != $exist[$k]) {
+                        $val[$k] = rename_file($v,$this->upload_base_path);
+                    }else {
+                        $val[$k] = $v;
+                    }
+                }
+                Db::table('mp_home')->where($whereHome)->update($val);
+            }catch (\Exception $e) {
+                foreach ($pic as $k=>$v) {
+                    if ($v != $exist[$k]) {
+                        @unlink($v);
+                    }
+                }
+                return ajax($e->getMessage(),-1);
+            }
+            foreach ($pic as $k=>$v) {
+                if ($v != $exist[$k]) {
+                    @unlink($exist[$k]);
+                }
+            }
+            return ajax();
+        }
+
+        try {
+            $exist = Db::table('mp_home')->where($whereHome)->find();
+            if (!$exist) {
+                die('NOTHING FOUND');
+            }
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+        $this->assign('info',$exist);
+        return $this->fetch();
+    }
+
+
 }

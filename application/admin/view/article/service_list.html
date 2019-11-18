@@ -1,23 +1,15 @@
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 案例展示 <span class="c-gray en">&gt;</span> 案例展示 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 平台内容 <span class="c-gray en">&gt;</span> 平台服务 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <section id="formAjax">
         <div class="text-c">
             <button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
-            <span class="select-box inline" style="width: 150px;">
-				<select class="select" name="type" id="type">
-                    <option value="">全部</option>
-					<option value="1" {if $param['type']==1}selected{/if}>文创产品</option>
-                    <option value="2" {if $param['type']==2}selected{/if}>智慧政务</option>
-                    <option value="3" {if $param['type']==3}selected{/if}>品牌营销</option>
-				</select>
-            </span>
-            <input type="text" name="search" value="{$Think.get.search}" id="search" placeholder=" 案例名" style="width:250px" class="input-text">
-            <button name="" id="search-btn" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查找案例</button>
+            <input type="text" name="search" value="{$Think.get.search}" id="search" placeholder=" 服务名" style="width:250px" class="input-text">
+            <button name="" id="search-btn" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查找服务</button>
         </div>
     </section>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a class="btn btn-primary radius" data-title="添加案例" data-href="article-add.html" onclick="add_info('添加案例','{:url("Cases/caseAdd")}')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加案例
+            <a class="btn btn-primary radius" data-title="添加服务" data-href="article-add.html" onclick="add_info('添加服务','{:url("Article/serviceAdd")}')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加服务
             </a>
         </span>
         <span class="r">共有数据：<strong>{$page.count}</strong> 条</span> </div>
@@ -26,9 +18,9 @@
         <tr class="text-c">
             <th width="25">#</th>
             <th width="60">排序</th>
-            <th width="160">案例图片</th>
-            <th>案例标题</th>
-            <th width="80">类型</th>
+            <th width="100">图片</th>
+            <th>服务标题</th>
+            <th width="120">发布时间</th>
             <th width="60">状态</th>
             <th width="100">操作</th>
         </tr>
@@ -40,17 +32,10 @@
                 <td>{$li.id}</td>
                 <td><input type="text" class="input-text text-c sort" value="{$li.sort}"></td>
                 <td>
-                    <div style="width: 160px;height: 80px;background-image: url('{if $li['pic']}/{$li.pic}{else /}/static/src/image/default.jpg{/if}');background-position: center;background-repeat: no-repeat;background-size: cover"></div>
+                    <div style="width: 100px;height: 100px;background:teal;background-image: url('{if $li['pic']}/{$li.pic}{else /}/static/src/image/default.jpg{/if}');background-position: center;background-repeat: no-repeat;background-size: cover"></div>
                 </td>
                 <td>{$li.title}</td>
-                <td>
-                    {switch $li['type']}
-                    {case 1}文创产品{/case}
-                    {case 2}智慧政务{/case}
-                    {case 3}品牌营销{/case}
-                    {default /}其他
-                    {/switch}
-                </td>
+                <td>{$li.create_time}</td>
                 <td class="td-status">
                     {if $li['status'] == 1}
                     <span class="label label-success radius">已显示</span>
@@ -68,7 +53,7 @@
                         <i class="Hui-iconfont">&#xe603;</i>
                     </a>
                     {/if}
-                    <a style="text-decoration:none" onclick="add_info('案例详情','{:url("Cases/caseDetail",array("id"=>$li["id"]))}')" class="ml-5" href="javascript:;" title="查看案例">
+                    <a style="text-decoration:none" onclick="add_info('服务详情','{:url("Article/serviceDetail",array("id"=>$li["id"]))}')" class="ml-5" href="javascript:;" title="查看服务">
                         <i class="Hui-iconfont">&#xe6df;</i>
                     </a>
                     <a style="text-decoration:none" class="ml-5" onClick="news_del(this,{$li['id']})" href="javascript:;" title="删除">
@@ -90,7 +75,7 @@
 <script type="text/javascript" src="/lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 
-    var url = '{:url("Cases/caseList")}' + '?<?php echo $page["query"];?>';
+    var url = '{:url("Article/serviceList")}' + '?<?php echo $page["query"];?>';
     var curr = '{$page.curr}',totalPage = '{$page.totalPage}';
     if(totalPage > 1) {
         laypage({
@@ -113,12 +98,9 @@
         var type = $("#formAjax").find("#type").val();
         var str = '';
         if(search.length != '') {
-            str += '&search=' + search;
+            str += 'search=' + search;
         }
-        if(type.length != '') {
-            str += '&type=' + type;
-        }
-        window.location.href = '{:url("Cases/caseList")}' + '?' + str;
+        window.location.href = '{:url("Article/serviceList")}' + '?' + str;
     });
 
     $(".sort").bind('input propertychange', function() {
@@ -131,11 +113,11 @@
             return;
         }
         $.ajax({
-            url:"{:url('Article/sortArticle')}",
+            url:"{:url('Article/sortService')}",
             type:"post",
             data:{id:id,sort:sort},
             success:function(data) {
-                console.log(data);
+                console.log(data)
             },
             error: function(data) {
                 console.log('system error')
@@ -143,7 +125,7 @@
         })
     });
 
-    /*添加案例*/
+    /*添加服务*/
     function add_info(title,url){
         var index = layer.open({
             type: 2,
@@ -158,7 +140,7 @@
     function news_hide(obj,id){
         layer.confirm('确认要隐藏吗？',function(index){
             $.ajax({
-                url:"{:url('Cases/caseHide')}",
+                url:"{:url('Article/serviceHide')}",
                 type:'post',
                 dataType:'json',
                 data:{id:id},
@@ -184,7 +166,7 @@
     function news_show(obj,id){
         layer.confirm('确认要显示吗？',function(index){
             $.ajax({
-                url:"{:url('Cases/caseShow')}",
+                url:"{:url('Article/serviceShow')}",
                 type:'post',
                 dataType:'json',
                 data:{id:id},
@@ -211,7 +193,7 @@
     function news_del(obj,id){
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
-                url: "{:url('Cases/caseDel')}",
+                url: "{:url('Article/serviceDel')}",
                 type: 'POST',
                 dataType: 'json',
                 data:{id:id},
