@@ -12,22 +12,46 @@ class Banner extends Base {
 
     //轮播图列表
     public function slideList() {
+
+        $param['type'] = input('param.type');
+        $page['query'] = http_build_query(input('param.'));
+        $curr_page = input('param.page',1);
+        $perpage = input('param.perpage',10);
+
         try {
-            $list = Db::table('mp_slideshow')->order(['sort'=>'ASC'])->select();
+            $where = [];
+            if($param['type']) {
+                $where[] = ['type','=',$param['type']];
+            }
+            $count = Db::table('mp_slideshow')->where($where)->count();
+
+            $page['count'] = $count;
+            $page['curr'] = $curr_page;
+            $page['totalPage'] = ceil($count/$perpage);
+            $list = Db::table('mp_slideshow')->where($where)
+                ->order(['sort'=>'ASC'])
+                ->limit(($curr_page-1)*$perpage,$perpage)->select();
         } catch (\Exception $e) {
             die($e->getMessage());
         }
         $this->assign('list',$list);
+        $this->assign('page',$page);
+        $this->assign('param',$param);
+        return $this->fetch();
+
+    }
+
+    public function slideAdd() {
         return $this->fetch();
     }
 
-
     //添加轮播图POST
-    public function slideadd() {
+    public function slideAddPost() {
         $val['title'] = input('post.title');
+        $val['type'] = input('post.type',1);
+        $val['status'] = input('post.status');
         checkInput($val);
         $val['url'] = input('post.url');
-
         if(isset($_FILES['file'])) {
             $info = upload('file',$this->upload_base_path);
             if($info['error'] === 0) {
@@ -58,7 +82,7 @@ class Banner extends Base {
     }
 
     //修改轮播图
-    public function slidemod() {
+    public function slideDetail() {
         $val['id'] = input('param.id');
         try {
             $exist = Db::table('mp_slideshow')->where('id','=',$val['id'])->find();
@@ -74,10 +98,12 @@ class Banner extends Base {
     }
 
     //修改轮播图POST
-    public function slidemod_post() {
+    public function slideMod() {
         if(request()->isPost()) {
             $val['title'] = input('post.title');
+            $val['type'] = input('post.type');
             $val['id'] = input('post.slideid');
+            $val['status'] = input('post.status');
             checkInput($val);
             $val['url'] = input('post.url');
             try {
