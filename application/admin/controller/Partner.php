@@ -8,54 +8,8 @@
 namespace app\admin\controller;
 use think\Db;
 
-class Content extends Base {
+class Partner extends Base {
 
-    public function moduleList() {
-        try {
-            $list = Db::table('mp_content')->field('id,title')->select();
-        } catch (\Exception $e) {
-            return ajax($e->getMessage(), -1);
-        }
-        $this->assign('list',$list);
-        return $this->fetch();
-    }
-
-    public function moduleDetail() {
-        $val['id'] = input('param.id');
-        checkInput($val);
-        try {
-            $where = [
-                ['id','=',$val['id']]
-            ];
-            $info = Db::table('mp_content')->where($where)->find();
-            if(!$info) {
-                die('非法参数');
-            }
-        } catch (\Exception $e) {
-            return ajax($e->getMessage(), -1);
-        }
-        $this->assign('info',$info);
-        return $this->fetch();
-    }
-
-    public function moduleMod() {
-        $val['id'] = input('post.id');
-        $val['content'] = input('post.content');
-        checkInput($val);
-        try {
-            $where = [
-                ['id','=',$val['id']]
-            ];
-            $info = Db::table('mp_content')->where($where)->find();
-            if(!$info) {
-                return ajax('非法参数',-1);
-            }
-            Db::table('mp_content')->where($where)->update($val);
-        } catch (\Exception $e) {
-            return ajax($e->getMessage(), -1);
-        }
-        return ajax();
-    }
 
     public function linksList() {
         $param['search'] = input('param.search');

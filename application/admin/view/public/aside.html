@@ -2,7 +2,7 @@
     <div class="menu_dropdown bk_2">
     {if session('username')===config('superman')}
         <dl id="menu-banner">
-            <dt><i class="Hui-iconfont">&#xe625;</i> 首页设置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dt><i class="iconfont">&#xe606;</i> 首页设置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
                     <li><a data-href="{:url('Banner/slideList')}" data-title="轮播图" href="javascript:;">轮播图</a></li>
@@ -12,7 +12,7 @@
             </dd>
         </dl>
         <dl id="menu-article">
-            <dt><i class="Hui-iconfont">&#xe616;</i> 平台内容<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dt><i class="iconfont">&#xe890;</i> 平台内容<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
                     <li><a data-href="{:url('Article/pingtaiList')}" data-title="山海平台" href="javascript:void(0);">山海平台</a></li>
@@ -21,16 +21,33 @@
                 </ul>
             </dd>
         </dl>
+        <dl id="menu-product">
+            <dt><i class="iconfont">&#xe719;</i> 产品中心<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a data-href="{:url('Product/productList')}" data-title="产品展示" href="javascript:void(0);">产品展示</a></li>
+                </ul>
+            </dd>
+        </dl>
         <dl id="menu-service">
-            <dt><i class="Hui-iconfont">&#xe616;</i> 案例展示<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dt><i class="iconfont">&#xe615;</i> 案例展示<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
                     <li><a data-href="{:url('Cases/caseList')}" data-title="案例展示" href="javascript:void(0);">案例展示</a></li>
                 </ul>
             </dd>
         </dl>
+        <dl id="menu-partner">
+            <dt><i class="iconfont">&#xe6b5;</i> 互利共赢<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a data-href="{:url('Partner/partnerList')}" data-title="合作方" href="javascript:void(0);">合作方</a></li>
+                    <li><a data-href="{:url('Partner/linksList')}" data-title="友情链接" href="javascript:void(0);">友情链接</a></li>
+                </ul>
+            </dd>
+        </dl>
         <dl id="menu-system">
-            <dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dt><i class="iconfont">&#xe617;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
                     <!--<li><a data-href="{:url('System/setting')}" data-title="系统设置" href="javascript:void(0)">系统设置</a></li>-->
