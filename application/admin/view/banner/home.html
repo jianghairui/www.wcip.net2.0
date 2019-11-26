@@ -96,6 +96,18 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">战略规划：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea id="editor1" type="text/plain" name="plan" style="width:100%;height:400px;">{$info.plan|htmlspecialchars_decode}</textarea>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">公司荣誉：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea id="editor2" type="text/plain" name="honor" style="width:100%;height:400px;">{$info.honor|htmlspecialchars_decode}</textarea>
+            </div>
+        </div>
+        <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
                 <button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
             </div>
@@ -119,6 +131,8 @@
     $(function(){
 
         UE.getEditor('editor');
+        UE.getEditor('editor1');
+        UE.getEditor('editor2');
 
         $('.skin-minimal input').iCheck({
             checkboxClass: 'icheckbox-blue',

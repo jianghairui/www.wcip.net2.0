@@ -163,10 +163,14 @@ class H5 extends Common {
     public function articleList() {
         $curr_page = input('post.page',1);
         $perpage = input('post.perpage',10);
+        $recommend = input('post.recommend',0);
         $curr_page = $curr_page ? $curr_page:1;
         $perpage = $perpage ? $perpage:10;
         $where = [];
         try {
+            if($recommend) {
+                $where[] = ['recommend','=',1];
+            }
             $count = Db::table('mp_article')->where($where)->count();
             $page['count'] = $count;
             $page['curr'] = $curr_page;
@@ -220,7 +224,7 @@ class H5 extends Common {
                 ['id','=',1]
             ];
             $info = Db::table('mp_home')->where($where)
-                ->field('logo,name,address,linkman,tel,qq,email,desc,intro,years,partners,fans,users,contacts')
+                ->field('logo,name,address,linkman,tel,qq,email,desc,intro,years,partners,fans,users,contacts,plan,honor')
                 ->find();
             if(!$info) {
                 return ajax('未找到信息',-1);
@@ -241,7 +245,65 @@ class H5 extends Common {
     }
 
     public function aboutShandong() {
+        try {
+            $where = [
+                ['id','=',2]
+            ];
+            $info = Db::table('mp_home')->where($where)
+                ->field('intro,role0,role1,role2,role3,video_url,role0_icon,role1_icon,role2_icon,role3_icon')
+                ->find();
+            if(!$info) {
+                return ajax('未找到信息',-1);
+            }
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($info);
+    }
 
+    public function serviceList() {
+        try {
+            $list = Db::table('mp_service')->select();
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($list);
+    }
+
+    public function serviceDetail() {
+        $val['id'] = input('post.id');
+        checkPost($val);
+        try {
+            $where = [
+                ['id','=',$val['id']]
+            ];
+            $info = Db::table('mp_service')->where($where)->field('title,title_en,content,pic')->find();
+            if(!$info) {
+                return ajax('invalid id',-4);
+            }
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($info);
+    }
+
+
+
+    public function articleDetail() {
+        $val['id'] = input('post.id');
+        checkPost($val);
+        try {
+            $where = [
+                ['id','=',$val['id']]
+            ];
+            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views')->find();
+            if(!$info) {
+                return ajax('invalid id',-4);
+            }
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($info);
     }
 
     public function contactUs() {
@@ -260,6 +322,31 @@ class H5 extends Common {
         return ajax();
     }
 
+    public function teamList() {
+        try {
+            $list = Db::table('mp_team')->select();
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($list);
+    }
+
+    public function teamDetail() {
+        $val['id'] = input('post.id');
+        checkPost($val);
+        try {
+            $where = [
+                ['id','=',$val['id']]
+            ];
+            $info = Db::table('mp_team')->where($where)->find();
+            if(!$info) {
+                return ajax('invalid id',-4);
+            }
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($info);
+    }
 
 
 

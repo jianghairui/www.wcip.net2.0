@@ -220,6 +220,8 @@ class Banner extends Base {
             $val['desc'] = input('post.desc');
             checkInput($val);
             $val['intro'] = input('post.intro');
+            $val['honor'] = input('post.honor');
+            $val['plan'] = input('post.plan');
             if(!is_email($val['email'])) {
                 return ajax('无效的邮箱',-1);
             }
