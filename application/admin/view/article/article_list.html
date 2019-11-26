@@ -3,6 +3,13 @@
     <section id="formAjax">
         <div class="text-c">
             <button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
+            <span class="select-box inline" style="width: 150px;">
+				<select class="select" name="type" id="type">
+                    <option value="">全部</option>
+					<option value="1" {if $param['type']==1}selected{/if}>公司动态</option>
+                    <option value="2" {if $param['type']==2}selected{/if}>行业动态</option>
+				</select>
+            </span>
             <input type="text" name="search" value="{$Think.get.search}" id="search" placeholder=" 资讯名" style="width:250px" class="input-text">
             <button name="" id="search-btn" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查找资讯</button>
         </div>
@@ -20,6 +27,7 @@
             <th width="60">排序</th>
             <th width="160">资讯图片</th>
             <th>资讯标题</th>
+            <th width="80">类型</th>
             <th width="120">发布时间</th>
             <th width="60">状态</th>
             <th width="100">操作</th>
@@ -35,6 +43,13 @@
                     <div style="width: 160px;height: 80px;background-image: url('{if $li['pic']}/{$li.pic}{else /}/static/src/image/default.jpg{/if}');background-position: center;background-repeat: no-repeat;background-size: cover"></div>
                 </td>
                 <td>{$li.title}</td>
+                <td>
+                    {switch $li['type']}
+                    {case 1}公司动态{/case}
+                    {case 2}行业动态{/case}
+                    {default /}其他
+                    {/switch}
+                </td>
                 <td>{$li.create_time}</td>
                 <td class="td-status">
                     {if $li['status'] == 1}
@@ -116,7 +131,10 @@
         var type = $("#formAjax").find("#type").val();
         var str = '';
         if(search.length != '') {
-            str += 'search=' + search;
+            str += '&search=' + search;
+        }
+        if(type.length != '') {
+            str += '&type=' + type;
         }
         window.location.href = '{:url("Article/articleList")}' + '?' + str;
     });
