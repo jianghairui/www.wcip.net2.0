@@ -54,6 +54,7 @@ class Article extends Base {
     public function articleAddPost() {
         $val['title'] = input('post.title');
         $val['desc'] = input('post.desc');
+        $val['type'] = input('post.type');
         checkInput($val);
         $val['content'] = input('post.content');
         $val['create_time'] = input('post.create_time');
@@ -97,6 +98,7 @@ class Article extends Base {
     public function articleMod() {
         $val['title'] = input('post.title');
         $val['desc'] = input('post.desc');
+        $val['type'] = input('post.type');
         $val['id'] = input('post.id');
         checkInput($val);
         $val['content'] = input('post.content');
@@ -177,6 +179,29 @@ class Article extends Base {
         }
         return ajax();
     }
+
+    public function recommend() {
+        $id = input('post.id');
+        try {
+            $where = [
+                ['id','=',$id]
+            ];
+            $exist = Db::table('mp_article')->where($where)->find();
+            if(!$exist) {
+                return ajax('非法参数',-1);
+            }
+            if($exist['recommend'] == 1) {
+                Db::table('mp_article')->where($where)->update(['recommend'=>0]);
+                return ajax(false);
+            }else {
+                Db::table('mp_article')->where($where)->update(['recommend'=>1]);
+                return ajax(true);
+            }
+        }catch (\Exception $e) {
+            return ajax($e->getMessage(),-1);
+        }
+    }
+
     //文章排序
     public function sortArticle() {
         $val['id'] = input('post.id');

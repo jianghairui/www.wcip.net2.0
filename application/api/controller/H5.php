@@ -137,7 +137,9 @@ class H5 extends Common {
         checkPost($post);
         $curr_page = $curr_page ? $curr_page:1;
         $perpage = $perpage ? $perpage:10;
-        $where = [];
+        $where = [
+            ['status','=',1]
+        ];
         if($post['type']) {
             $where[] = ['type','=',$post['type']];
         }
@@ -160,16 +162,36 @@ class H5 extends Common {
         return ajax($ret);
     }
 
+    public function caseDetail() {
+        $val['id'] = input('post.id');
+        checkPost($val);
+        try {
+            $where = [
+                ['id','=',$val['id']]
+            ];
+            $info = Db::table('mp_case')->where($where)->find();
+            if(!$info) {
+                return ajax('invalid id',-4);
+            }
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($info);
+    }
+
     public function articleList() {
         $curr_page = input('post.page',1);
         $perpage = input('post.perpage',10);
-        $recommend = input('post.recommend',0);
+        $id = input('post.id',0);
         $curr_page = $curr_page ? $curr_page:1;
         $perpage = $perpage ? $perpage:10;
-        $where = [];
+        $where = [
+            ['status','=',1]
+        ];
         try {
-            if($recommend) {
+            if($id) {
                 $where[] = ['recommend','=',1];
+                $where[] = ['id','<>',$id];
             }
             $count = Db::table('mp_article')->where($where)->count();
             $page['count'] = $count;
@@ -300,6 +322,7 @@ class H5 extends Common {
             if(!$info) {
                 return ajax('invalid id',-4);
             }
+            Db::table('mp_article')->where($where)->setInc('views',1);
         } catch (\Exception $e) {
             return ajax($e->getMessage(), -1);
         }
@@ -347,6 +370,9 @@ class H5 extends Common {
         }
         return ajax($info);
     }
+
+
+
 
 
 
