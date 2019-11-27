@@ -272,7 +272,7 @@ class H5 extends Common {
                 ['id','=',2]
             ];
             $info = Db::table('mp_home')->where($where)
-                ->field('intro,role0,role1,role2,role3,video_url,role0_icon,role1_icon,role2_icon,role3_icon')
+                ->field('desc,intro,role0,role1,role2,role3,video_url,role0_icon,role1_icon,role2_icon,role3_icon,qrcode3')
                 ->find();
             if(!$info) {
                 return ajax('未找到信息',-1);
