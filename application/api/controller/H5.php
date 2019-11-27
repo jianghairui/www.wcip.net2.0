@@ -339,6 +339,7 @@ class H5 extends Common {
                 return ajax('无效的手机号',6);
             }
             Db::table('mp_contact')->insert($val);
+            Db::table('mp_home')->where('id','=',1)->setInc('contacts',1);
         } catch (\Exception $e) {
             return ajax($e->getMessage(), -1);
         }
@@ -347,7 +348,10 @@ class H5 extends Common {
 
     public function teamList() {
         try {
-            $list = Db::table('mp_team')->select();
+            $where = [
+                ['id','<>',1]
+            ];
+            $list = Db::table('mp_team')->where($where)->select();
         } catch (\Exception $e) {
             return ajax($e->getMessage(), -1);
         }
@@ -364,6 +368,23 @@ class H5 extends Common {
             $info = Db::table('mp_team')->where($where)->find();
             if(!$info) {
                 return ajax('invalid id',-4);
+            }
+        } catch (\Exception $e) {
+            return ajax($e->getMessage(), -1);
+        }
+        return ajax($info);
+    }
+
+    public function aboutBwgsd() {
+        try {
+            $where = [
+                ['id','=',3]
+            ];
+            $info = Db::table('mp_home')->where($where)
+                ->field('intro')
+                ->find();
+            if(!$info) {
+                return ajax('未找到信息',-1);
             }
         } catch (\Exception $e) {
             return ajax($e->getMessage(), -1);

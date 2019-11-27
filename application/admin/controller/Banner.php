@@ -284,7 +284,6 @@ class Banner extends Base {
         $whereHome = [
             ['id','=',2]
         ];
-
         if(request()->isPost()) {
             $pic['qrcode3'] = input('post.qrcode3');
             $pic['role0_icon'] = input('post.role0_icon');
@@ -361,6 +360,32 @@ class Banner extends Base {
         }
         $this->assign('info',$exist);
         return $this->fetch();
+    }
+
+    public function bwgsd() {
+        $whereHome = [
+            ['id','=',3]
+        ];
+        if(request()->isPost()) {
+            $val['intro'] = input('post.intro');
+            try {
+                Db::table('mp_home')->where($whereHome)->update($val);
+            }catch (\Exception $e) {
+                return ajax($e->getMessage(),-1);
+            }
+            return ajax();
+        }
+        try {
+            $exist = Db::table('mp_home')->where($whereHome)->find();
+            if (!$exist) {
+                die('NOTHING FOUNDED');
+            }
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
+        $this->assign('info',$exist);
+        return $this->fetch();
+
     }
 
 
