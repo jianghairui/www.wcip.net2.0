@@ -18,7 +18,7 @@
         <tr class="text-c">
             <th width="25">#</th>
             <th width="60">排序</th>
-            <th width="160">产品图片</th>
+            <th width="120">产品图片</th>
             <th width="200">产品标题</th>
             <th>标签</th>
             <th width="60">状态</th>
@@ -32,7 +32,7 @@
                 <td>{$li.id}</td>
                 <td><input type="text" class="input-text text-c sort" value="{$li.sort}"></td>
                 <td>
-                    <div style="width: 160px;height: 80px;background-image: url('{if $li['pic']}/{$li.pic}{else /}/static/src/image/default.jpg{/if}');background-position: center;background-repeat: no-repeat;background-size: cover"></div>
+                    <div style="width: 120px;height: 80px;background-image: url('{if $li['pic']}/{$li.pic}{else /}/static/src/image/default.jpg{/if}');background-position: center;background-repeat: no-repeat;background-size: cover"></div>
                 </td>
                 <td>{$li.title}</td>
                 <td>
