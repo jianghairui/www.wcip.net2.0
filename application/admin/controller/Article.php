@@ -20,13 +20,16 @@ class Article extends Base {
 
         $curr_page = input('param.page',1);
         $perpage = input('param.perpage',10);
-        $where = [];
+        $where = [
+            ['status','=',1]
+        ];
         if($param['search']) {
             $where[] = ['title','like',"%{$param['search']}%"];
         }
         if($param['type']) {
             $where[] = ['type','=',$param['type']];
         }
+        $order = ['sort'=>'ASC','id'=>'DESC'];
         $count = Db::table('mp_article')->where($where)->count();
 
         $page['count'] = $count;
@@ -35,7 +38,7 @@ class Article extends Base {
         try {
             $list = Db::table('mp_article')
                 ->where($where)
-                ->order(['sort'=>'ASC','create_time'=>'DESC'])
+                ->order($order)
                 ->limit(($curr_page - 1)*$perpage,$perpage)->select();
         }catch (\Exception $e) {
             die('SQL错误: ' . $e->getMessage());

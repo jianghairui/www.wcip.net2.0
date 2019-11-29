@@ -13,6 +13,7 @@ class H5 extends Common {
     public function slideList() {
         try {
             $where = [
+                ['status','=',1],
                 ['type','=',2]
             ];
             $order = ['sort'=>'ASC'];
@@ -55,7 +56,9 @@ class H5 extends Common {
 
         $curr_page = $curr_page ? $curr_page:1;
         $perpage = $perpage ? $perpage:10;
-        $where = [];
+        $where = [
+            ['status','=',1]
+        ];
         try {
             $whereTags = [
                 ['type','=',1],
@@ -189,6 +192,7 @@ class H5 extends Common {
         $where = [
             ['status','=',1]
         ];
+        $order = ['sort'=>'ASC','id'=>'DESC'];
         try {
             if($id) {
                 $where[] = ['recommend','=',1];
@@ -203,7 +207,7 @@ class H5 extends Common {
             $page['totalPage'] = ceil($count/$perpage);
             $list = Db::table('mp_article')
                 ->where($where)
-                ->order(['sort'=>'ASC','create_time'=>'DESC'])
+                ->order($order)
                 ->field('id,title,pic,views,create_time')
                 ->limit(($curr_page - 1)*$perpage,$perpage)->select();
         }catch (\Exception $e) {
