@@ -57,8 +57,10 @@ class Article extends Base {
         $val['type'] = input('post.type');
         checkInput($val);
         $val['content'] = input('post.content');
-        $val['create_time'] = input('post.create_time');
+        $val['create_time'] = input('post.create_time',date('Y-m-d H:i:s'));
         $val['admin_id'] = session('admin_id');
+        $val['author'] = input('post.author');
+        $val['author'] = $val['author'] ? $val['author']:'大眼蝠';
         if(isset($_FILES['file'])) {
             $info = upload('file',$this->upload_base_path);
             if($info['error'] === 0) {
@@ -102,8 +104,9 @@ class Article extends Base {
         $val['id'] = input('post.id');
         checkInput($val);
         $val['content'] = input('post.content');
-        $val['create_time'] = input('post.create_time');
-        $val['admin_id'] = session('admin_id');
+        $val['create_time'] = input('post.create_time',date('Y-m-d H:i:s'));
+        $val['author'] = input('post.author');
+        $val['author'] = $val['author'] ? $val['author']:'大眼蝠';
         if(isset($_FILES['file'])) {
             $info = upload('file',$this->upload_base_path);
             if($info['error'] === 0) {

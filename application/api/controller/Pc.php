@@ -71,7 +71,7 @@ class Pc extends Common {
             $list = Db::table('mp_product')
                 ->where($where)
                 ->order(['sort'=>'ASC','create_time'=>'DESC'])
-                ->field('id,title,pic,tags')
+                ->field('id,title,pic,tags,desc')
                 ->limit(($curr_page - 1)*$perpage,$perpage)->select();
             $tags = [];
             foreach ($tag_list as $t) {
@@ -102,7 +102,7 @@ class Pc extends Common {
             ['id','=',$val['id']]
         ];
         try {
-            $exist = Db::table('mp_product')->where($where)->field('id,title,content,pic,tags,create_time')->find();
+            $exist = Db::table('mp_product')->where($where)->field('id,title,desc,content,pic,tags,create_time')->find();
             if(!$exist) {
                 return ajax('invalid id',-4);
             }
@@ -152,7 +152,7 @@ class Pc extends Common {
             $list = Db::table('mp_case')
                 ->where($where)
                 ->order(['sort'=>'ASC','id'=>'DESC'])
-                ->field('id,title,pic')
+                ->field('id,title,pic,desc')
                 ->limit(($curr_page - 1)*$perpage,$perpage)->select();
         }catch (\Exception $e) {
             die('SQL错误: ' . $e->getMessage());
@@ -183,6 +183,7 @@ class Pc extends Common {
         $curr_page = input('post.page',1);
         $perpage = input('post.perpage',10);
         $id = input('post.id',0);
+        $type = input('post.type',1);
         $curr_page = $curr_page ? $curr_page:1;
         $perpage = $perpage ? $perpage:10;
         $where = [
@@ -192,6 +193,9 @@ class Pc extends Common {
             if($id) {
                 $where[] = ['recommend','=',1];
                 $where[] = ['id','<>',$id];
+            }
+            if($type) {
+                $where[] = ['type','=',$type];
             }
             $count = Db::table('mp_article')->where($where)->count();
             $page['count'] = $count;
@@ -318,7 +322,7 @@ class Pc extends Common {
             $where = [
                 ['id','=',$val['id']]
             ];
-            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views')->find();
+            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views,author')->find();
             if(!$info) {
                 return ajax('invalid id',-4);
             }

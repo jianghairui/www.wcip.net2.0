@@ -183,6 +183,7 @@ class H5 extends Common {
         $curr_page = input('post.page',1);
         $perpage = input('post.perpage',10);
         $id = input('post.id',0);
+        $type = input('post.type',1);
         $curr_page = $curr_page ? $curr_page:1;
         $perpage = $perpage ? $perpage:10;
         $where = [
@@ -192,6 +193,9 @@ class H5 extends Common {
             if($id) {
                 $where[] = ['recommend','=',1];
                 $where[] = ['id','<>',$id];
+            }
+            if($type) {
+                $where[] = ['type','=',$type];
             }
             $count = Db::table('mp_article')->where($where)->count();
             $page['count'] = $count;
@@ -318,7 +322,7 @@ class H5 extends Common {
             $where = [
                 ['id','=',$val['id']]
             ];
-            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views')->find();
+            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views,author')->find();
             if(!$info) {
                 return ajax('invalid id',-4);
             }
