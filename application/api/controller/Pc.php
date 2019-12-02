@@ -14,7 +14,7 @@ class Pc extends Common {
         try {
             $where = [
                 ['status','=',1],
-                ['type','=',2]
+                ['type','=',1]
             ];
             $order = ['sort'=>'ASC'];
             $list = Db::table('mp_slideshow')->where($where)->order($order)->select();
@@ -186,7 +186,7 @@ class Pc extends Common {
         $curr_page = input('post.page',1);
         $perpage = input('post.perpage',10);
         $id = input('post.id',0);
-        $type = input('post.type',1);
+        $type = input('post.type');
         $curr_page = $curr_page ? $curr_page:1;
         $perpage = $perpage ? $perpage:10;
         $where = [
@@ -195,8 +195,15 @@ class Pc extends Common {
         $order = ['sort'=>'ASC','id'=>'DESC'];
         try {
             if($id) {
-                $where[] = ['recommend','=',1];
+                $whereDetail = [
+                    ['id','=',$id]
+                ];
+                $exist = Db::table('mp_article')->where($whereDetail)->find();
+                if(!$exist) {
+                    return ajax('invalid id',-4);
+                }
                 $where[] = ['id','<>',$id];
+                $where[] = ['type','=',$exist['type']];
             }
             if($type) {
                 $where[] = ['type','=',$type];
