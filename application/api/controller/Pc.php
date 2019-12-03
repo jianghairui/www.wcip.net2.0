@@ -215,7 +215,7 @@ class Pc extends Common {
             $list = Db::table('mp_article')
                 ->where($where)
                 ->order($order)
-                ->field('id,title,pic,views,create_time')
+                ->field('id,title,pic,views,create_time,origin')
                 ->limit(($curr_page - 1)*$perpage,$perpage)->select();
         }catch (\Exception $e) {
             die('SQL错误: ' . $e->getMessage());
@@ -261,7 +261,7 @@ class Pc extends Common {
                 ['id','=',1]
             ];
             $info = Db::table('mp_home')->where($where)
-                ->field('logo,name,address,linkman,tel,qq,email,desc,intro,years,partners,fans,users,contacts,plan,honor')
+                ->field('logo,name,address,linkman,tel,qq,email,desc,intro,years,partners,fans,users,contacts,plan,honor,qrcode1,qrcode2')
                 ->find();
             if(!$info) {
                 return ajax('未找到信息',-1);
@@ -333,7 +333,7 @@ class Pc extends Common {
             $where = [
                 ['id','=',$val['id']]
             ];
-            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views,author')->find();
+            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views,author,origin')->find();
             if(!$info) {
                 return ajax('invalid id',-4);
             }
