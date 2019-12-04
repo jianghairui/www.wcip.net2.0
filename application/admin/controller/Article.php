@@ -100,6 +100,7 @@ class Article extends Base {
         $this->assign('info',$exist);
         return $this->fetch();
     }
+
     //修改资讯提交
     public function articleMod() {
         $val['title'] = input('post.title');

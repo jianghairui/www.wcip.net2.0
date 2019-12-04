@@ -333,14 +333,28 @@ class Pc extends Common {
             $where = [
                 ['id','=',$val['id']]
             ];
-            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views,author,origin')->find();
+            $info = Db::table('mp_article')->where($where)->field('title,desc,content,pic,create_time,views,author,origin,type')->find();
             if(!$info) {
                 return ajax('invalid id',-4);
             }
             Db::table('mp_article')->where($where)->setInc('views',1);
+            $wherePrev = [
+                ['id','<',$val['id']],
+                ['type','=',$info['type']]
+            ];
+            $orderPrev = ['sort'=>'DESC','id'=>'DESC'];
+            $prev = Db::table('mp_article')->where($wherePrev)->order($orderPrev)->field('id,title')->find();
+            $whereNext = [
+                ['id','>',$val['id']],
+                ['type','=',$info['type']]
+            ];
+            $orderNext = ['sort'=>'ASC','id'=>'ASC'];
+            $next = Db::table('mp_article')->where($whereNext)->order($orderNext)->field('id,title')->find();
         } catch (\Exception $e) {
             return ajax($e->getMessage(), -1);
         }
+        $info['prev'] = $prev;
+        $info['next'] = $next;
         return ajax($info);
     }
 
