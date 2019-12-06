@@ -82,7 +82,7 @@ class Login extends Base {
 
     public function logout() {
         session(null);
-        $this->redirect('Login/index');
+        $this->redirect(url('Login/index'));
     }
 
     public function vcode() {
