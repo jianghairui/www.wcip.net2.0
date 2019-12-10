@@ -225,9 +225,9 @@ class Banner extends Base {
             if(!is_email($val['email'])) {
                 return ajax('无效的邮箱',-1);
             }
-            if(!is_tel($val['tel'])) {
-                return ajax('无效的手机号',-1);
-            }
+//            if(!is_tel($val['tel'])) {
+//                return ajax('无效的手机号',-1);
+//            }
             try {
                 $exist = Db::table('mp_home')->where($whereHome)->find();
                 if(!$exist) {
