@@ -215,7 +215,7 @@ class H5 extends Common {
             $list = Db::table('mp_article')
                 ->where($where)
                 ->order($order)
-                ->field('id,title,pic,views,create_time')
+                ->field('id,title,desc,pic,views,create_time')
                 ->limit(($curr_page - 1)*$perpage,$perpage)->select();
         }catch (\Exception $e) {
             die('SQL错误: ' . $e->getMessage());
