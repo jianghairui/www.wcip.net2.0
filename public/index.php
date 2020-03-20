@@ -17,12 +17,8 @@ $agent = check_wap();
 
 // check if wap
 function check_wap(){
-    // 先检查是否为wap代理，准确度高
-    if(stristr($_SERVER['HTTP_VIA'],"wap")){
-        return true;
-    }
     // 检查浏览器是否接受 WML.
-    elseif(strpos(strtoupper($_SERVER['HTTP_ACCEPT']),"VND.WAP.WML") > 0){
+    if(strpos(strtoupper($_SERVER['HTTP_ACCEPT']),"VND.WAP.WML") > 0){
         return true;
     }
     //检查USER_AGENT
